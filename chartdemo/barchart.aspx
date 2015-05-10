@@ -64,7 +64,8 @@
               bindto: '#pie_chart',
               data: {
                   columns: convertedData,
-                  type: 'pie'
+                  type: 'pie',
+                  onclick: function(d, i) {updateGauge(d.id);} //d.id returns the product name in this example -- good luck finding that in the docs
               }
           });
 
@@ -73,20 +74,58 @@
               var sourceData = <%Response.Write(ForecastData.ToString());%>;
               var TYtotal = 0;
               var TYforecast = 0;
-              sourceData.forEach(function(item){
-                  TYtotal = item.TY + TYtotal;
-                  TYforecast = item.Forecast + TYforecast;
-              })
 
-              var forecastPercentage = (TYtotal / TYforecast) * 100;
-              //alert(forecastPercentage);
+              //alert(product);
+              if (product == "All"){
+                  //alert("In the all branch");
+                  sourceData.forEach(function(item){
+                      TYtotal = item.TY + TYtotal;
+                      TYforecast = item.Forecast + TYforecast;
+                  })
 
-              var calculatedData = [];
-              calculatedData.push(["All Products", forecastPercentage]);
+                  var forecastPercentage = (TYtotal / TYforecast) * 100;
+                  //alert(forecastPercentage);
+
+                  var calculatedData = [];
+                  calculatedData.push(["All Products", forecastPercentage]);
+              }
+              else
+              {
+                  //alert("In the else branch");
+                  sourceData.forEach(function(item){
+                      if (product == item.Product){
+                          //alert("found a match " + product + ", " + item.Product );
+                          TYtotal = item.TY + TYtotal;
+                          TYforecast = item.Forecast + TYforecast;
+                          //alert(TYtotal);
+                          //alert(TYforecast);
+                      }
+                  })
+
+                  var forecastPercentage2 = (TYtotal / TYforecast) * 100;
+                  //alert(forecastPercentage2);
+
+                  var calculatedData = [];
+                  calculatedData.push(["All Products", forecastPercentage2]);
+                  
+              }
+              
               return calculatedData;
           }
 
-          var ForecastDataSource = calcGaugeData("");
+          function updateGauge(product)
+          {
+              //alert(product);
+              var ForecastDataSource2 = calcGaugeData(product);
+
+              //gaugechart.unload({});
+              gaugechart.load({
+                  columns: ForecastDataSource2
+              });
+              //gaugechart.load({});
+          }
+
+          var ForecastDataSource = calcGaugeData("All");
 
           var gaugechart = c3.generate({
               bindto: '#gauge_chart',
