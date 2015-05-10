@@ -17,6 +17,7 @@ namespace chartdemo
     {
 
         public string JSONDocument;
+        public string ForecastData;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,9 +37,18 @@ namespace chartdemo
                da.SelectCommand = cmd;
                da.Fill(ds);
 
-               conn.Close();
-
                JSONDocument = JsonConvert.SerializeObject(ds.Tables[0], Formatting.None);
+
+               cmd = new OdbcCommand("select T.Product, T.[This Year] as TY, F.Forecast FROM bar_chart T JOIN forecast F ON T.Product = F.Product");
+               cmd.Connection = conn;
+               da = new OdbcDataAdapter();
+               ds = new System.Data.DataSet();
+               da.SelectCommand = cmd;
+               da.Fill(ds);
+
+               ForecastData = JsonConvert.SerializeObject(ds.Tables[0], Formatting.None);
+
+               conn.Close();
                
         }
     }
