@@ -18,14 +18,23 @@
       <%Response.Write(JSONDocument.ToString()); %>
     </div>
     <hr />
-    <div style="font-family:Verdana">Here is an example using C3.js </p></div>
+    <div style="font-family:Verdana">Here is an example using C3.js </div>
     <div id="bar_chart" style="width:450px" ></div>
-    <div style="font-family:Verdana""><p /><hr /><p />Go ahead, click me.  You know you want to. Just one slice.</div>
-    <div id="pie_chart" style="width:450px" ></div>
-    <div><hr /></div>
-    <div style="font-family:Verdana" id="ForecastLabel"></script></b></div>
-    <div id="gauge_chart" style="width:450px" ></div>
-      <script>
+    
+    <table style="width:900px">
+    <tr>
+     <td>
+     <div style="font-family:Verdana;width:450px;float:left">Go ahead, click me.  You know you want to. Just one slice.</div>
+     <div id="pie_chart" style="width:450px;float:left" ></div>
+     </td>
+     <td style="vertical-align:top">
+     <div style="font-family:Verdana;width:450px;align-content:center" id="ForecastLabel"></div>
+     <div id="gauge_chart" style="width:450px;float:right" ></div>
+     </td>
+     </tr>
+    </table>
+    
+          <script>
           //dataObj = jQuery.ParseJSON(<%Response.Write(JSONDocument.ToString());%>);
 
           //alert(convertedData[0,1].toString());
